@@ -160,7 +160,9 @@ const displayRecipes = () => {
           </div>
           <div class="name">
               <h5>
-                ${recipe.name}
+                <a href="${!recipe.url ? recipe.URL : recipe.url}" target="_blank">
+                  ${recipe.name}
+                </a>
               </h5>
           </div>
           <div class="cooking-time">
