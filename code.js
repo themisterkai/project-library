@@ -2,9 +2,13 @@ const recipePlaceholder = document.querySelector('.recipes');
 const selection = document.querySelector('.selection');
 const sortSelect = document.getElementById('sort-select');
 const ingredientsSelect = document.getElementById('ingredients-select');
+const searchBar = document.getElementById('search-bar');
+const resetButton = document.getElementById('reset-button');
+
 let cuisineTypeSelection = 'all';
 let sortBy = '';
 let ingredientsCount = '';
+let searchBarText = '';
 
 // dynamically generate the cuisine types based on our recipes
 const cuisineTypes = recipes.reduce((acc, recipe) => {
@@ -29,7 +33,7 @@ const cuisineTypes = recipes.reduce((acc, recipe) => {
 
 // generate the select list for cuisineType
 const cuisineTypeSelect = document.createElement("select");
-cuisineTypeSelect.id = "cuisineType";
+cuisineTypeSelect.id = "cuisine-type";
 selection.appendChild(cuisineTypeSelect);
 // populate the select list with the different cuisine types
 cuisineTypes.forEach(cuisineType => {
@@ -54,6 +58,26 @@ ingredientsSelect.onchange = () => {
   displayRecipes();
 }
 
+searchBar.oninput = () => {
+  searchBarText = searchBar.value;
+  displayRecipes()
+}
+
+resetButton.onclick = () => {
+  cuisineTypeSelect.selectedIndex = 0;
+
+  
+  sortSelect.selectedIndex = 0;
+  sortBy = ''
+
+  ingredientsSelect.selectedIndex = 0;
+  ingredientsCount = ''
+
+  searchBar.value = '';
+  searchBarText = '';
+  displayRecipes()
+}
+
 const filterRecipe = recipesToFilter => {
   const filteredByCuisineType = recipesToFilter.filter(recipe => {
     if (cuisineTypeSelection === 'all') {
@@ -70,7 +94,7 @@ const filterRecipe = recipesToFilter => {
         }
       }
     }
-  })
+  });
 
   const filteredByIngredients = filteredByCuisineType.filter(recipe => {
     switch (ingredientsCount) {
@@ -81,9 +105,23 @@ const filterRecipe = recipesToFilter => {
       default:
         return recipe;
     } 
-  })
+  });
 
-  return filteredByIngredients;
+  const filteredBySearch = filteredByIngredients.filter(recipe => {
+    // match by name
+    if (recipe.name.toLowerCase().includes(searchBarText.toLowerCase())) {
+      return recipe
+    }
+    // match by ingredients
+    for (ingredient of recipe.ingredients) {
+      console.log(ingredient)
+      if (ingredient.toLowerCase().includes(searchBarText.toLowerCase())) {
+        return recipe
+      }
+    }
+  });
+
+  return filteredBySearch;
 }
 
 const sortRecipe = recipesToSort => {
