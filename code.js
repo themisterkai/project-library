@@ -127,7 +127,7 @@ const displayRecipes = () => {
   if (sortedRecipes.length < 1) {
     recipeCountOutput += `
       <div class="recipe-count">
-        No recipes to display based on selected filter
+        No recipes to display based on the search term or selected filter
       </div>
     `
   } else {
@@ -148,9 +148,9 @@ const displayRecipes = () => {
             <img src='${recipe.image}' />
           </div>
           <div class="name">
-            <p class="font-weight-bold">
-              ${recipe.name}
-            </p>
+              <h5>
+                ${recipe.name}
+              </h5>
           </div>
           <div class="cooking-time">
             ${recipe.totalTime} min
