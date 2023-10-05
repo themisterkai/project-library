@@ -8,21 +8,22 @@
 </head>
 <body>
   <h1>Project Recipes</h1>
-  <div class="selection">
-    <!-- <h5 id="italian">
-      Italian
-    </h5>
-    <h5 id="american">
-      American
-    </h5>
-    <h5 id="clear">
-      Clear
-    </h5> -->
+  <div class="filters">
+    <div class="selection"></div>
+    <div class="sort">
+      <select id="sort-select">
+        <option value=""></option>
+        <option value="min">Minimum cook time</option>
+        <option value="max">Maximum cook time</option>
+        <option value="ascend">Alphabetical Ascending</option>
+        <option value="descend">Alphabetical Descending</option>
+      </select>
+    </div>
   </div>
   <div class="recipes">
   </div>
   <!-- Don't forget to connect the JavaScript file -->
-  <script src="./json.js"></script>
   <script src="./script.js"></script>
+  <script src="./code.js"></script>
 </body>
 </html>
