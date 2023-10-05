@@ -2,3 +2,28 @@ input {
   height: 30px;
   width: 250px;
 }
+
+.recipes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.recipe {
+  background: lightcoral;
+  padding: 10px;
+  max-width: 380px;
+  height: 370px;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+img {
+  width: 320px;
+  height: 300px;
+  object-fit: cover;
+}

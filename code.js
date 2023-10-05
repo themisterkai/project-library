@@ -1,4 +1,5 @@
 const recipePlaceholder = document.querySelector('.recipes');
+const recipeCountPlaceholder = document.querySelector('.recipe-count-text');
 const selection = document.querySelector('.selection');
 const sortSelect = document.getElementById('sort-select');
 const ingredientsSelect = document.getElementById('ingredients-select');
@@ -118,37 +119,48 @@ const sortRecipe = recipesToSort => {
 
 // function to display the recipes we have based on the filter selected
 const displayRecipes = () => {
-  const recipesToFilter = filterRecipe(recipes)
-  const sortedRecipes = sortRecipe(recipesToFilter)
+  const recipesToFilter = filterRecipe(recipes);
+  const sortedRecipes = sortRecipe(recipesToFilter);
 
-  let out = '';
+  let recipeCountOutput = '';
+
   if (sortedRecipes.length < 1) {
-    out += `
+    recipeCountOutput += `
       <div class="recipe-count">
         No recipes to display based on selected filter
       </div>
     `
   } else {
-    out += `
+    recipeCountOutput += `
       <div class="recipe-count">
         Showing you ${sortedRecipes.length} ${sortedRecipes.length > 1 ? 'recipes' : 'recipe'}
       </div>
     `
-    sortedRecipes.forEach(recipe => {
-      out += `
+  }
+  recipeCountPlaceholder.innerHTML = recipeCountOutput;
+  
+  let recipeOutput = '';
+  sortedRecipes.forEach(recipe => {
+    recipeOutput += `
+      <div class="col-sm">
         <div class="recipe">
           <div class="image">
             <img src='${recipe.image}' />
           </div>
           <div class="name">
-            ${recipe.name}, ${recipe.totalTime} min
+            <p class="font-weight-bold">
+              ${recipe.name}
+            </p>
+          </div>
+          <div class="cooking-time">
+            ${recipe.totalTime} min
           </div>
         </div>
-      `
-    });
-  }
+      </div>
+    `
+  });
   
-  recipePlaceholder.innerHTML = out;
+  recipePlaceholder.innerHTML = recipeOutput; 
 }
 
 // call displayRecipes initially. this will display all available recipes
