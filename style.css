@@ -1,8 +1,26 @@
-input {
-  height: 30px;
-  width: 250px;
+.search-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
+input {
+  height: 30px;
+  width: 300px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  border-bottom: 1px solid black;
+  text-align: center;
+}
+
+h1 {
+  text-align: center;
+}
+
+.filters {
+  padding-left: 20px;
+}
 .recipes {
   display: flex;
   flex-wrap: wrap;
@@ -19,6 +37,12 @@ input {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+}
+
+.recipe-count {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 
