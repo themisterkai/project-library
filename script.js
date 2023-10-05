@@ -2,32 +2,64 @@
 If you choose to create your own arrays with elements, just make sure that some
 of the properties make sense to filter on, and some to sort on.*/
 
-let placeholder = document.querySelector('.recipes')
-let filterItalian = document.getElementById('italian')
-let filterAmerican = document.getElementById('american')
-let filterClear = document.getElementById('clear')
+const placeholder = document.querySelector('.recipes');
+const selection = document.querySelector('.selection');
+const filterItalian = document.getElementById('italian');
+const filterAmerican = document.getElementById('american');
+const filterClear = document.getElementById('clear');
 
-let filter = 'american';
-
-filterItalian.onclick= () => {
-  filter = 'italian';
-  refilter()
+filterItalian.onclick = () => {
+  refilter('italian')
 }
 
-filterAmerican.onclick= () => {
-  filter = 'american';
-  refilter()
+filterAmerican.onclick = () => {
+  refilter('american')
 }
 
-filterClear.onclick= () => {
-  filter = '';
-  refilter()
+filterClear.onclick = () => {
+  refilter('all')
 }
 
-const refilter = () => {
+const cuisineTypes = recipes.reduce((acc, recipe) => {
+  if (typeof recipe.cuisineType === 'string') {
+    if (acc.indexOf(recipe.cuisineType.toLowerCase()) === -1) {
+      acc.push(recipe.cuisineType.toLowerCase())
+    }
+  } else {
+    for (let i = 0; i < recipe.cuisineType.length; i++) {
+      if (acc.indexOf(recipe.cuisineType[0].toLowerCase()) === -1) {
+        acc.push(recipe.cuisineType[0].toLowerCase())
+      }
+    }
+  }
+  // sort the array
+  return acc.sort()
+}, ['all']);
+console.log(cuisineTypes)
+
+const selectList = document.createElement("select");
+selectList.id = "cuisineType";
+selection.appendChild(selectList);
+
+
+for (let i = 0; i < cuisineTypes.length; i++) {
+  let option = document.createElement("option");
+  option.value = cuisineTypes[i];
+  option.text = cuisineTypes[i];
+  selectList.appendChild(option);
+}
+
+// const cuisineTypeSelect = document.getElementById('cuisineType')
+selectList.onchange = () => {
+  
+  refilter(selectList.options[selectList.selectedIndex].value)
+  // console.log('++++++', selectList.options[selectList.selectedIndex].value)
+}
+
+const refilter = (filter) => {
   let out = '';
   recipes.filter(recipe => {
-    if (filter === '') {
+    if (filter === 'all') {
       return recipe
     }
     if (typeof recipe.cuisineType === 'string') {
@@ -56,7 +88,7 @@ const refilter = () => {
   placeholder.innerHTML = out;
 }
 
-refilter()
+refilter('all')
 
 
 
