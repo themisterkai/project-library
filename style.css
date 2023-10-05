@@ -2,6 +2,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  padding-bottom: 20px;
 }
 
 input {
@@ -19,8 +20,9 @@ h1 {
 }
 
 .filters {
-  padding-left: 20px;
+  padding-left: 70px;
 }
+
 .recipes {
   display: flex;
   flex-wrap: wrap;
@@ -30,7 +32,7 @@ h1 {
 .recipe {
   background: lightcoral;
   padding: 10px;
-  max-width: 380px;
+  max-width: 400px;
   height: 370px;
   margin: 10px;
   display: flex;
@@ -47,7 +49,7 @@ h1 {
 
 
 img {
-  width: 320px;
+  width: 350px;
   height: 300px;
   object-fit: cover;
 }
