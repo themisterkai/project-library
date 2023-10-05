@@ -6,6 +6,9 @@ const ingredientsSelect = document.getElementById('ingredients-select');
 const searchBar = document.getElementById('search-bar');
 const resetButton = document.getElementById('reset-button');
 
+// default values for the different filters and sort options. I chose to
+// use global variables and implement it this way so that we can use multiple
+// filters at the same time
 let cuisineTypeSelection = 'all';
 let sortBy = '';
 let ingredientsCount = '';
@@ -48,8 +51,9 @@ cuisineTypes.forEach(cuisineType => {
 // 1. by cuisine type
 // 2. by ingredient count
 // 3. by matching the recipe name or ingredient name
-// This is implemented this way in order to have multiple different filters running at the
-// same time. Note that the user does not have to filter by all the possible options.
+// This is implemented this way in order to have multiple different filters
+// running at the same time. Note that the user does not have to filter by
+// all the possible options.
 const filterRecipe = recipesToFilter => {
   // we filter the recipes by the cuisine type
   const filteredByCuisineType = recipesToFilter.filter(recipe => {
@@ -81,7 +85,8 @@ const filterRecipe = recipesToFilter => {
     } 
   });
 
-  // we filter the recipes by keywords, either the recipe name or by ingredient name
+  // we filter the recipes by keywords, filtering by matching the recipe name
+  // or by matching the ingredient name
   const filteredBySearch = filteredByIngredients.filter(recipe => {
     // match by name
     if (recipe.name.toLowerCase().includes(searchBarText.toLowerCase())) {
@@ -89,7 +94,6 @@ const filterRecipe = recipesToFilter => {
     }
     // match by ingredients
     for (ingredient of recipe.ingredients) {
-      console.log(ingredient)
       if (ingredient.toLowerCase().includes(searchBarText.toLowerCase())) {
         return recipe;
       }
@@ -99,18 +103,23 @@ const filterRecipe = recipesToFilter => {
   return filteredBySearch;
 }
 
-// Sort the recipe by min/max cooking time or by alphabetical order (ascending or descending)
+// Sort the recipe by alphabetical order (ascending or descending), min/max
+// cooking time, or min/max ingredients, 
 const sortRecipe = recipesToSort => {
   return recipesToSort.sort((a, b) => {
     switch (sortBy) {
-      case 'min':
-        return a.totalTime - b.totalTime;
-      case 'max':
-        return b.totalTime - a.totalTime;
       case 'ascend':
         return a.name.localeCompare(b.name);
       case 'descend':
         return a.name.localeCompare(b.name) * -1;
+      case 'min':
+        return a.totalTime - b.totalTime;
+      case 'max':
+        return b.totalTime - a.totalTime;
+      case 'num-min':
+        return a.ingredients.length - b.ingredients.length;
+      case 'num-max':
+          return b.ingredients.length - a.ingredients.length;
       default:
         return;
     }
@@ -118,6 +127,7 @@ const sortRecipe = recipesToSort => {
 }
 
 // function to display the recipes we have based on the filter selected
+// and the sort option selected
 const displayRecipes = () => {
   const recipesToFilter = filterRecipe(recipes);
   const sortedRecipes = sortRecipe(recipesToFilter);
@@ -133,7 +143,8 @@ const displayRecipes = () => {
   } else {
     recipeCountOutput += `
       <div class="recipe-count">
-        Showing you ${sortedRecipes.length} ${sortedRecipes.length > 1 ? 'recipes' : 'recipe'}
+        Showing you ${sortedRecipes.length} ${sortedRecipes.length > 1 ? 
+          'recipes' : 'recipe'}
       </div>
     `
   }
@@ -166,27 +177,33 @@ const displayRecipes = () => {
 // call displayRecipes initially. this will display all available recipes
 displayRecipes();
 
-// filter recipes when the selected cuisine type changes
+// filter recipes by cuisine type when the selected cuisine type changes
 cuisineTypeSelect.onchange = () => {
-  cuisineTypeSelection = cuisineTypeSelect.options[cuisineTypeSelect.selectedIndex].value;
+  cuisineTypeSelection =
+    cuisineTypeSelect.options[cuisineTypeSelect.selectedIndex].value;
   displayRecipes();
 }
 
+// filter recipes by the number of ingredients
+ingredientsSelect.onchange = () => {
+  ingredientsCount =
+    ingredientsSelect.options[ingredientsSelect.selectedIndex].value;
+  displayRecipes();
+}
+
+// sort the recipes using the selected option
 sortSelect.onchange = () => {
   sortBy = sortSelect.options[sortSelect.selectedIndex].value;
   displayRecipes();
 }
 
-ingredientsSelect.onchange = () => {
-  ingredientsCount = ingredientsSelect.options[ingredientsSelect.selectedIndex].value;
-  displayRecipes();
-}
-
+// filter recipes by search keywords
 searchBar.oninput = () => {
   searchBarText = searchBar.value;
   displayRecipes();
 }
 
+// reset all filters and sort options
 resetButton.onclick = () => {
   cuisineTypeSelect.selectedIndex = 0;
   cuisineTypeSelection = 'all';
