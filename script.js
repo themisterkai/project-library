@@ -1,25 +1,7 @@
-/*Here we have created two different arrays that you can work with if you want.
-If you choose to create your own arrays with elements, just make sure that some
-of the properties make sense to filter on, and some to sort on.*/
-
-const placeholder = document.querySelector('.recipes');
+const recipePlaceholder = document.querySelector('.recipes');
 const selection = document.querySelector('.selection');
-const filterItalian = document.getElementById('italian');
-const filterAmerican = document.getElementById('american');
-const filterClear = document.getElementById('clear');
 
-filterItalian.onclick = () => {
-  refilter('italian')
-}
-
-filterAmerican.onclick = () => {
-  refilter('american')
-}
-
-filterClear.onclick = () => {
-  refilter('all')
-}
-
+// dynamically generate the cuisine types based on our recipes
 const cuisineTypes = recipes.reduce((acc, recipe) => {
   if (typeof recipe.cuisineType === 'string') {
     if (acc.indexOf(recipe.cuisineType.toLowerCase()) === -1) {
@@ -35,40 +17,36 @@ const cuisineTypes = recipes.reduce((acc, recipe) => {
   // sort the array
   return acc.sort()
 }, ['all']);
-console.log(cuisineTypes)
 
-const selectList = document.createElement("select");
-selectList.id = "cuisineType";
-selection.appendChild(selectList);
-
-
-for (let i = 0; i < cuisineTypes.length; i++) {
-  let option = document.createElement("option");
-  option.value = cuisineTypes[i];
-  option.text = cuisineTypes[i];
-  selectList.appendChild(option);
+// generate the select list for cuisineType
+const cuisineTypeSelect = document.createElement("select");
+cuisineTypeSelect.id = "cuisineType";
+selection.appendChild(cuisineTypeSelect);
+// populate the select list with the different cuisine types
+cuisineTypes.forEach(cuisineType => {
+  const option = document.createElement("option");
+  option.value = cuisineType;
+  option.text = cuisineType;
+  cuisineTypeSelect.appendChild(option);
+})
+// filter recipes when the selected cuisine type changes
+cuisineTypeSelect.onchange = () => {
+  displayRecipes(cuisineTypeSelect.options[cuisineTypeSelect.selectedIndex].value)
 }
 
-// const cuisineTypeSelect = document.getElementById('cuisineType')
-selectList.onchange = () => {
-  
-  refilter(selectList.options[selectList.selectedIndex].value)
-  // console.log('++++++', selectList.options[selectList.selectedIndex].value)
-}
-
-const refilter = (filter) => {
+const displayRecipes = cuisineTypeSelection => {
   let out = '';
   recipes.filter(recipe => {
-    if (filter === 'all') {
+    if (cuisineTypeSelection === 'all') {
       return recipe
     }
     if (typeof recipe.cuisineType === 'string') {
-      if (recipe.cuisineType.toLowerCase() === filter) {
+      if (recipe.cuisineType.toLowerCase() === cuisineTypeSelection) {
         return recipe
       }
     } else {
       for (let i = 0; i < recipe.cuisineType.length; i++) {
-        if (recipe.cuisineType[i].toLowerCase() === filter) {
+        if (recipe.cuisineType[i].toLowerCase() === cuisineTypeSelection) {
           return recipe
         }
       }
@@ -85,10 +63,10 @@ const refilter = (filter) => {
       </div>
     `
   });
-  placeholder.innerHTML = out;
+  recipePlaceholder.innerHTML = out;
 }
 
-refilter('all')
+displayRecipes('all')
 
 
 
