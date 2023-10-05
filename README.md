@@ -17,4 +17,4 @@ additonal sorting method).
 
 ## View it live
 
-This project is deployed on Github Pages: [https://themisterkai.github.io/project-library/](https://themisterkai.github.io/project-library/l)
+This project is deployed on Github Pages: [https://themisterkai.github.io/project-library/](https://themisterkai.github.io/project-library)
