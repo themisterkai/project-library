@@ -150,8 +150,26 @@ const displayRecipes = () => {
   }
   recipeCountPlaceholder.innerHTML = recipeCountOutput;
   
+  // this will format the cuisine type output
   let recipeOutput = '';
   sortedRecipes.forEach(recipe => {
+    let cuisineTypeText = '';
+    if (typeof recipe.cuisineType === 'string') {
+      cuisineTypeText = recipe.cuisineType.toLowerCase();
+    } else {
+      for (let i = 0; i < recipe.cuisineType.length; i++) {
+        cuisineTypeText += i === 0 ? recipe.cuisineType[0].toLowerCase() : ', ' + recipe.cuisineType[i].toLowerCase()
+      }
+    }
+
+    // add ingredients in a list
+    let ingredientList = '';
+    recipe.ingredients.forEach(ingredient => {
+      ingredientList += `
+        <li> ${ingredient} </li>
+      `;
+    })
+
     recipeOutput += `
       <div class="col-sm">
         <div class="recipe">
@@ -167,13 +185,16 @@ const displayRecipes = () => {
               <h6> from ${recipe.source}
           </div>
           <div class="cuisineType">
-            <i>${recipe.cuisineType}</i>
+            <i>${cuisineTypeText}</i>
           </div>
           <div class="cookingTime">
             ${recipe.totalTime} min
           </div>
           <div class="ingredients">
-            ${recipe.ingredients.length} ingredients needed
+            <b>Ingredients (${recipe.ingredients.length} needed):</b>
+          </div>
+          <div class="ingredientsList">
+            ${ingredientList}
           </div>
         </div>
       </div>
