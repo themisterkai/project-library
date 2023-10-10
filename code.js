@@ -26,8 +26,8 @@ const cuisineTypes = recipes.reduce((acc, recipe) => {
     }
   } else {
     for (let i = 0; i < recipe.cuisineType.length; i++) {
-      if (!acc.includes(recipe.cuisineType[0].toLowerCase())) {
-        acc.push(recipe.cuisineType[0].toLowerCase());
+      if (!acc.includes(recipe.cuisineType[i].toLowerCase())) {
+        acc.push(recipe.cuisineType[i].toLowerCase());
       }
     }
   }
@@ -164,9 +164,16 @@ const displayRecipes = () => {
                   ${recipe.name}
                 </a>
               </h5>
+              <h6> from ${recipe.source}
           </div>
-          <div class="cooking-time">
+          <div class="cuisineType">
+            <i>${recipe.cuisineType}</i>
+          </div>
+          <div class="cookingTime">
             ${recipe.totalTime} min
+          </div>
+          <div class="ingredients">
+            ${recipe.ingredients.length} ingredients needed
           </div>
         </div>
       </div>
